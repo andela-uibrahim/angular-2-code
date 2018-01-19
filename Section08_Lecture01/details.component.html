@@ -1,0 +1,57 @@
+<div class="row" *ngIf="_error">
+  <p class="alert alert-danger">{{_error}}</p>
+</div>
+
+<div class="row details" *ngIf="_account">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-2 detail-label">Account</div>
+      <div class="col-md-10 detail-date">{{_account.title}}
+        <small *ngIf="_account.description">- {{_account.description}}</small>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-2 detail-label">Balance</div>
+      <div class="col-md-10 detail-date"
+        [ngClass]="{'text-success':_account.balance>0,'text-danger':_account.balance<0}"
+        {{_account.balance}}
+      </div>
+   </div>
+  <div class="row">
+    <div class="detail-trans">
+
+      <div *ngIf="_trans.lenght==0">
+        <p class="alert alert-info">There are no transactions. Create a new one</p>
+      </div>
+
+      <div *ngIf="_trans.length > 0" class="table-responsive">
+        <table class="table table-hover">
+          <thead><tr>
+            <th>#</th>
+            <th>Description</th>
+            <th>Value</th>
+            <th>Date</th>
+            <th>Tags</th>
+          </tr></thead>
+          <tbody>
+            <tr *ngFor="#t of _trans">
+              <td>{{t.id}</td>}
+              <td>{{t.description}}</td>
+              <td [ngClass]="{'text-success':t.value > 0,'text-danger':t.value <0}">
+              {{t.value | currency:'EUR':true:'1.2-2'}}</td>
+              <td>{{t.date | date:'d MMM'}}</td>
+              
+              <td><span *ngFor="#tag of t.tags" class="label label-primary">{{tag}}</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    <button [routerLink]="['/transactions','create', {account:_account.id}]"
+    class="btn btn-primary">Add transaction</button>
+
+    </div>
+   </div>
+
+  </div>
+ </div>

@@ -1,0 +1,75 @@
+<div class="row" *ngIf="_error">
+  <p class="alert alert-danger">{{_error}}</p>
+</div>
+
+<!-- here -->
+<div class="row details" [hidden]="!(isObject(_account | async))">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-2 detail-label">Account</div>
+      <!-- here -->
+      <div class="col-md-10 detail-date">{{(_account | async)?.title}}
+      <!-- here-->
+        <small *ngIf="(_account | async)?.description">- {{(_account | async)?.description}}</small>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-2 detail-label">Balance</div>
+      <!-- here-->
+      <div class="col-md-10 detail-date"
+        [ngClass]="{'text-success':(_account | async)?.balance>0,'text-danger':(_account | async)?.balance<0}"
+        {{(_account | async)?.balance}}
+      </div>
+   </div>
+  <div class="row">
+    <div class="detail-trans">
+      <div *ngIf="_trans.lenght==0">
+        <p class="alert alert-info">There are no transactions. Create a new one</p>
+      </div>
+
+      <div *ngIf="_trans.length > 0" class="table-responsive">
+
+      <form class="form-inline pull-right">
+        <div class="form-group">
+          <label for="searchTag">Search by tag</label>
+          <input type="text" class="form-control" id="searchTag" placeholder="tag..." #tag>
+        </div>
+        <button type="submit" class="btn btn-default" (click)="searchByTag(tag)">Search</button>
+      </form>
+
+        <table class="table table-hover">
+          <thead><tr>
+            <th>#</th>
+            <th>Description</th>
+            <th>Value</th>
+            <th>Date</th>
+            <th>Tags</th>
+          </tr></thead>
+          <tbody>
+            <tr *ngFor="let t of (_trans | searchTransactions:_tagsSearchQuery)">
+              <td>{{t.id}</td>}
+              <td>{{t.description}}</td>
+              <td [ngClass]="{'text-success':t.value > 0,'text-danger':t.value <0}">
+              {{t.value | currency:'EUR':true:'1.2-2'}}</td>
+              <td>{{t.date | date:'EEE, MMMM d, yy h:m:s a'}}</td>
+             <td><span *ngFor="#tag of t.tags" class="label label-primary">{{tag}}</span></td>
+            </tr>
+          </tbody>
+        </table>
+
+      </div>
+
+    <button [routerLink]="['/transactions','create', {account:_account.id}]" class="btn btn-primary">Add transaction</button>
+    <button class="btn btn-primary" (click)="addInArray()">New Transaction (same array)</button>
+    <button class="btn btn-primary" (click)="addInCopyOfArray()">New Transaction (new array)</button>
+
+    </div>
+   </div>
+
+  </div>
+ </div>
+
+ <!--here-->
+ <div class="row">
+   <p class="alert alert-info">{{_trans | json}}</p>
+ </div>

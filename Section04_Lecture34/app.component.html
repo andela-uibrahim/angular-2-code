@@ -1,0 +1,13 @@
+<div class="container">
+  <h1>Personal finance</h1>
+
+  <h2>Your accounts</h2>
+
+  <accounts-list [accounts]="_accounts"(delete)="removeAcc($event)"></accounts-list>
+
+
+  <account-form (created)="createAcc($event)"></account-form>
+  <!-- BEGIN-->
+
+  <!-- END-->
+</div>

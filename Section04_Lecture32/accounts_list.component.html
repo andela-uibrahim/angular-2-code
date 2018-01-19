@@ -1,0 +1,18 @@
+<div class="row" *ngIf="_accounts.leght == O">
+  <div class="alert alert-info"><strong>No acounts yet</strong> Please add it...</div>
+</div>
+
+<div class="row">
+  <div class="acc col-md-12" *ngFor="#acc of _accounts, #i = index" [ngClass]="{selected:_selected[i]}">
+  <h3>{{acc.title}}</h3>
+  <p>{{acc.description}}</p>
+  <p>Balance: <strong class="lead">{{acc.balance}}</strong></p>
+
+  <div class="row">
+    <div class="col-md-3">
+      <button class="btn btn-danger" (click)="_remove(i)">Delete</button>
+      <!-- <button class="btn btn-primary" (click)="select(i)">{{_selected[I] ? 'Deselect' : 'Select'}}</button>}}-->
+    </div>
+  </div>
+ </div>
+</div>
